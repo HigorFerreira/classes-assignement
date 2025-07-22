@@ -9,17 +9,11 @@ fn main() {
     println!("Comming to match python check");
     match python_check {
         Ok(output) => {
-            let out = output.stdout;
-            let out = String::from_utf8(out);
-
-            match out {
-                Ok(message) => {
-                    println!("{message}");
-                },
-                Err(_) => {
-                    print!("Error while converting rust");
-                }
-            }
+            let out = match String::from_utf8(output.stdout) {
+                Ok(str) => Some(str),
+                Err(_) => None
+            };
+            println!("{}", out.unwrap_or_else(|| "<invalid UTF-8>".into()));
         },
         Err(_) => {
             show_error_message("Python not foung", "Python not installed");
