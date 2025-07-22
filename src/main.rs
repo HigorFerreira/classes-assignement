@@ -1,5 +1,6 @@
 use std::process::Command;
 use std::io::{self, Write};
+use winapi::um::winuser::{MessageBoxA, MB_OK, MB_ICONINFORMATION};
 
 fn main() {
     let python_check = Command::new("python")
@@ -23,7 +24,11 @@ fn main() {
 
 fn show_error_message(title: &str, message: &str) {
     unsafe {
-        println!("{title}");
-        println!("{message}");
+        MessageBoxA(
+            std::ptr::null_mut(),
+            message.as_ptr() as *const i8,
+            title.as_ptr() as *const i8,
+            MB_OK | MB_ICONINFORMATION
+        );
     }
 }
