@@ -7,14 +7,12 @@ fn main() {
         .arg("--version")
         .output();
 
-    println!("Comming to match python check");
     match python_check {
         Ok(output) => {
-            let out = match String::from_utf8(output.stdout) {
-                Ok(str) => Some(str),
-                Err(_) => None
-            };
-            println!("{}", out.unwrap_or_else(|| "<invalid UTF-8>".into()));
+            if output.status.success() {
+                let version = String::from_utf8_lossy(&output.stdout);
+                println!("Python installed with version: {}", version);
+            }
         },
         Err(_) => {
             show_error_message("Python not foung", "Python not installed");
