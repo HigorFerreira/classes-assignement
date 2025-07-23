@@ -1,3 +1,6 @@
+mod resources;
+
+use resources::Resources;
 use std::process::{Command, Stdio};
 use std::io::{self, Write};
 use regex::Regex;
@@ -13,7 +16,7 @@ fn main() {
         Ok(output) => {
             if output.status.success() {
                 let version = String::from_utf8_lossy(&output.stdout);
-                if checkVersion(&version) {
+                if check_version(&version) {
                     match start_python_http_server(Some(8000)) {
                         Ok(_) => println!("Server stopped"),
                         Err(e) => eprintln!("Error:{}", e),
@@ -65,7 +68,7 @@ fn start_python_http_server(port: Option<u16>) -> io::Result<()> {
     Ok(())
 }
 
-fn checkVersion(str: &str) -> bool {
+fn check_version(str: &str) -> bool {
     let pattern = r"^Python\s*3\.12\.\d+$";
     let re = Regex::new(pattern).unwrap();
     re.is_match(str.trim())

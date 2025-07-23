@@ -6,3 +6,5 @@ edition = "2024"
 [dependencies]
 winapi = { version = "0.3", features = ["winuser"] }
 regex = "1.0"
+base64 = "0.21"
+anyhow = "1.0"
