@@ -1,16 +1,14 @@
 mod resources;
 
-use resources::Resources;
-use std::process::{Command, Stdio};
-use std::io::{self, Write};
 use regex::Regex;
+use resources::Resources;
+use std::io::{self, Write};
+use std::process::{Command, Stdio};
 
 // use winapi::um::winuser::{MessageBoxA, MB_OK, MB_ICONINFORMATION};
 
 fn main() {
-    let python_check = Command::new("python")
-        .arg("--version")
-        .output();
+    let python_check = Command::new("python").arg("--version").output();
 
     match python_check {
         Ok(output) => {
@@ -21,15 +19,11 @@ fn main() {
                         Ok(_) => println!("Server stopped"),
                         Err(e) => eprintln!("Error:{}", e),
                     }
+                } else {
                 }
-                else {
-
-                }
+            } else {
             }
-            else {
-
-            }
-        },
+        }
         Err(_) => {
             // show_error_message("Python não encontrado", "Para rodar o seguinte programa, é necessário python 3.12+");
         }
@@ -61,7 +55,10 @@ fn start_python_http_server(port: Option<u16>) -> io::Result<()> {
         .stderr(Stdio::inherit())
         .spawn()?;
 
-    println!("Started Python HTTP server at http://localhost:{}", port.unwrap_or(8000));
+    println!(
+        "Started Python HTTP server at http://localhost:{}",
+        port.unwrap_or(8000)
+    );
     println!("Press Ctrl+C to stop the server...");
 
     child.wait()?;
